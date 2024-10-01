@@ -7,6 +7,8 @@
 
 - [ ] Connect backend to mongodb service
 
+- [ ] Create Users
+
 - [ ] Use bcrypt for password hashing
 
 ## Courses Managment
