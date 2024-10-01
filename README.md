@@ -13,4 +13,4 @@
 
 ## Courses Managment
 ### To-Do:
-- [ ] Allow users to add new courses (with title, description, teacher, and schedule)
+- [+] Allow users to add new courses (with title, description, teacher, and schedule)
