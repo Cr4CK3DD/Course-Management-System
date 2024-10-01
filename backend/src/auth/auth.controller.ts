@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpException, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthPayloadDto } from './dto/auth.dto';
 import { AuthService } from './auth.service';
 import { LocalGuard } from './guards/local.guard';
@@ -19,17 +19,16 @@ export class AuthController {
         const findUser = await this.userService.findUserByUsername(createUserDto.username);
 
         if (findUser)
-            throw new HttpException('User Exist', 409);
+            throw new HttpException('User already exists', HttpStatus.CONFLICT);
 
         this.userService.createUser(createUserDto);
-        
-        return ({statusCode: 200, status: "User Created"});
+        return ({statusCode: 200, status: "Registration successful! Please log in."});
     }
 
     @Post('login')
     @UseGuards(LocalGuard)
     login(@Req() req: Request) {
-        return req.user;
+        return { message: 'Login successful', token: req.user };
     }
 
     @Get('home')

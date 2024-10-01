@@ -22,7 +22,7 @@ export class CourseService {
         }
     }
 
-    async getCourses(page: number, limit: number = 20) {
+    async getCourses(page: number, limit: number = 16) {
         try {
             const skip = (page - 1) * limit; 
             const courses = await this.courseModel
