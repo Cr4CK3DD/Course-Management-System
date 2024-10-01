@@ -1,7 +1,7 @@
 # Course Management System
 
 ## User Mangement
-### To-Do:
+### DONE:
 
 - [x] User authentication and authorization with jwt token.
 
@@ -12,4 +12,5 @@
 - [x] Use bcrypt for password hashing
 
 ## Courses Managment
-[ ] comming soon...
+### To-Do:
+- [ ] Allow users to add new courses (with title, description, teacher, and schedule)
