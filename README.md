@@ -1,15 +1,21 @@
 # Course Management System
 
 ## User Mangement
-### To-Do:
+### DONE:
 
 - [x] User authentication and authorization with jwt token.
 
-- [ ] Connect backend to mongodb service
+- [x] Connect backend to mongodb service
 
-- [ ] Create Users
+- [x] User can Login and Register
 
-- [ ] Use bcrypt for password hashing
+- [x] Use bcrypt for password hashing
 
 ## Courses Managment
-[ ] comming soon...
+### To-Do:
+- [x] Allow users to add new courses (with title, description, teacher, and schedule)
+
+## FrontEnd
+- [ ] Login Page
+- [ ] Register Page
+- [ ] Home Page
