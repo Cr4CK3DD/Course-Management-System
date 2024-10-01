@@ -13,4 +13,9 @@
 
 ## Courses Managment
 ### To-Do:
-- [+] Allow users to add new courses (with title, description, teacher, and schedule)
+- [x] Allow users to add new courses (with title, description, teacher, and schedule)
+
+## Frontend
+- [ ] Login page
+- [ ] Register page
+- [ ] Home page
