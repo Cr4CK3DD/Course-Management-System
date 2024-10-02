@@ -11,10 +11,7 @@ interface Course {
 }
 
 interface CourseData {
-  currentPage: number;
   data: Course[];
-  totalCourses: number;
-  totalPages: number;
 }
 
 const Home: React.FC = () => {
@@ -32,6 +29,7 @@ const Home: React.FC = () => {
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [searchType, setSearchType] = useState<'title' | 'instructor'>('title');
 
   const navigate = useNavigate();
 
@@ -123,38 +121,43 @@ const Home: React.FC = () => {
     setIsModalOpen(false);
   };
 
-  const searchCourseByName = async (query: string) => {
+  const searchCourse = async (query: string) => {
     if (!query) {
-      setErrorMessage('Please enter a course name.');
+      setErrorMessage('Please enter a search query.');
       return;
     }
 
     setLoading(true);
-    let found = false;
-
     try {
-      for (let page = 1; page <= (courses?.totalPages || 1); page++) {
-        const response = await axios.get(`http://localhost:3000/course?page=${page}`, {
-          headers: {
-            Authorization: `Bearer ${Cookies.get('token')}`,
-          },
-        });
+      if (searchType === 'title') {
+        const response = await axios.post('http://localhost:3000/course/getByTitle', 
+          { title: query },
+          {
+            headers: {
+              Authorization: `Bearer ${Cookies.get('token')}`,
+            },
+          }
+        );
 
-        const courseData: CourseData = response.data;
-        const foundCourse = courseData.data.find((course) => course.title.toLowerCase().includes(query.toLowerCase()));
+        const course = response.data.data;
+        setCourses({ data: [course] });
+      } else if (searchType === 'instructor') {
+        const response = await axios.post('http://localhost:3000/course/getByInstructor', 
+          { instructor: query },
+          {
+            headers: {
+              Authorization: `Bearer ${Cookies.get('token')}`,
+            },
+          }
+        );
 
-        if (foundCourse) {
-          setCourses({ ...courseData, data: [foundCourse] });
-          found = true;
-          break;
-        }
+        const course = response.data.data;
+        setCourses({ data: [course] });
       }
 
-      if (!found) {
-        setErrorMessage('Course not found.');
-      }
+      setErrorMessage(null);
     } catch (error: any) {
-      setErrorMessage('Error searching for course. Please try again.');
+      setErrorMessage("Course does not exist");
     } finally {
       setLoading(false);
     }
@@ -179,11 +182,19 @@ const Home: React.FC = () => {
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search course by name"
+            placeholder="Search course"
             className="p-2 border border-gray-300 rounded"
           />
+          <select
+            value={searchType}
+            onChange={(e) => setSearchType(e.target.value as 'title' | 'instructor')}
+            className="p-2 border border-gray-300 rounded"
+          >
+            <option value="title">By Title</option>
+            <option value="instructor">By Instructor</option>
+          </select>
           <button
-            onClick={() => searchCourseByName(searchQuery)}
+            onClick={() => searchCourse(searchQuery)}
             className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
           >
             Search
@@ -241,23 +252,6 @@ const Home: React.FC = () => {
           </button>
         </div>
       )}
-
-      <div className="flex justify-between mt-4 w-full max-w-6xl">
-        <button 
-          disabled={currentPage === 1}
-          onClick={() => handlePageChange(currentPage - 1)}
-          className="bg-blue-500 text-white px-4 py-2 rounded disabled:opacity-50"
-        >
-          Previous
-        </button>
-        <button 
-          disabled={currentPage === courses?.totalPages}
-          onClick={() => handlePageChange(currentPage + 1)}
-          className="bg-blue-500 text-white px-4 py-2 rounded disabled:opacity-50"
-        >
-          Next
-        </button>
-      </div>
 
       {isModalOpen && (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-75 flex justify-center items-center">

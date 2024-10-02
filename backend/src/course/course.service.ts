@@ -46,20 +46,20 @@ export class CourseService {
     
     async getCoursesByInstructor(instructor: string) {
         try {
-            const courses = await this.courseModel.find({ instructor }).exec();
+            const course = await this.courseModel.findOne({ instructor }).exec();
 
-            if (courses.length === 0) {
-                throw new BadRequestException('No courses found for this instructor');
+            if (!course) {
+                throw new BadRequestException('Course not found');
             }
 
             return {
                 statusCode: 200,
-                data: courses.map(course => ({
+                data: {
                     title: course.title,
                     description: course.description,
                     instructor: course.instructor,
                     schedule: course.schedule,
-                })),
+                },
             };
         } catch (error) {
             throw new BadRequestException('Could not fetch courses for the instructor');
