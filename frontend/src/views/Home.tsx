@@ -12,6 +12,9 @@ interface Course {
 
 interface CourseData {
   data: Course[];
+  totalPages: number;
+  currentPage: number;
+  totalCourses: number;
 }
 
 const Home: React.FC = () => {
@@ -129,32 +132,18 @@ const Home: React.FC = () => {
 
     setLoading(true);
     try {
-      if (searchType === 'title') {
-        const response = await axios.post('http://localhost:3000/course/getByTitle', 
-          { title: query },
-          {
-            headers: {
-              Authorization: `Bearer ${Cookies.get('token')}`,
-            },
-          }
-        );
+      const searchEndpoint = searchType === 'title' 
+        ? 'http://localhost:3000/course/getByTitle' 
+        : 'http://localhost:3000/course/getByInstructor';
 
-        const course = response.data.data;
-        setCourses({ data: [course] });
-      } else if (searchType === 'instructor') {
-        const response = await axios.post('http://localhost:3000/course/getByInstructor', 
-          { instructor: query },
-          {
-            headers: {
-              Authorization: `Bearer ${Cookies.get('token')}`,
-            },
-          }
-        );
+      const response = await axios.post(searchEndpoint, { [searchType]: query }, {
+        headers: {
+          Authorization: `Bearer ${Cookies.get('token')}`,
+        },
+      });
 
-        const course = response.data.data;
-        setCourses({ data: [course] });
-      }
-
+      const course = response.data.data;
+      setCourses({ data: [course], totalPages: 1, currentPage: 1, totalCourses: 1 });
       setErrorMessage(null);
     } catch (error: any) {
       setErrorMessage("Course does not exist");
@@ -253,6 +242,30 @@ const Home: React.FC = () => {
         </div>
       )}
 
+      {/* Pagination Section */}
+      {courses && courses.totalPages > 1 && (
+        <div className="flex justify-center mt-6">
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="bg-gray-300 text-gray-700 px-4 py-2 rounded-l hover:bg-gray-400 disabled:bg-gray-200 disabled:cursor-not-allowed"
+          >
+            Previous
+          </button>
+          <span className="px-4 py-2 bg-gray-100 text-gray-700">
+            Page {currentPage} of {courses.totalPages}
+          </span>
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === courses.totalPages}
+            className="bg-gray-300 text-gray-700 px-4 py-2 rounded-r hover:bg-gray-400 disabled:bg-gray-200 disabled:cursor-not-allowed"
+          >
+            Next
+          </button>
+        </div>
+      )}
+
+      {/* Modal for Creating a Course */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-75 flex justify-center items-center">
           <div className="bg-white rounded-lg shadow-md w-96 p-6">
