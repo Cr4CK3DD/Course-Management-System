@@ -61,7 +61,7 @@ user_token = "jwt_token_here"
 python test/test_script.py
 ```
 
-# Technical Details
+# Details
 ## Authentication Endpoints
 ### Register
 - Endpoint: `POST /auth/register`
