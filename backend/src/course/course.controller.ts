@@ -22,4 +22,17 @@ export class CourseController {
         return availableCourses;
     }
 
+    @UseGuards(JwtAuthGuard)
+    @Post('/getByTitle')
+    async getCoursesByTitle(@Body() body) {
+        const course = await this.courseService.getCourseByTitle(body.title);
+        return course;
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Post('/getByInstructor')
+    async getCoursesByInstructor(@Body() body) {
+        const course = await this.courseService.getCoursesByInstructor(body.instructor);
+        return course;
+    }
 }

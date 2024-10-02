@@ -17,3 +17,5 @@ export class Course {
 }
 
 export const CourseSchema = SchemaFactory.createForClass(Course);
+
+CourseSchema.index({ title: 'text' });

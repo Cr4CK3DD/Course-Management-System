@@ -14,13 +14,58 @@ export class CourseService {
     async createCourse(createCourseDto: CreateCourseDto){
         try {
             const newCourse = new this.courseModel(createCourseDto);
-            console.log("CREATED");
+
             const createdCourse = await newCourse.save();
             return {statusCode: 200, message: 'Courses created sucssesfully'};
         } catch (error) {
             throw new BadRequestException('Could not create Course');
         }
     }
+
+    async getCourseByTitle(title: string) {
+        try {
+            const course = await this.courseModel.findOne({ title }).exec();
+
+            if (!course) {
+                throw new BadRequestException('Course not found');
+            }
+    
+            return {
+                statusCode: 200,
+                data: {
+                    title: course.title,
+                    description: course.description,
+                    instructor: course.instructor,
+                    schedule: course.schedule,
+                },
+            };
+        } catch (error) {
+            throw new BadRequestException('Could not fetch the course');
+        }
+    }
+    
+    async getCoursesByInstructor(instructor: string) {
+        try {
+            const courses = await this.courseModel.find({ instructor }).exec();
+
+            if (courses.length === 0) {
+                throw new BadRequestException('No courses found for this instructor');
+            }
+
+            return {
+                statusCode: 200,
+                data: courses.map(course => ({
+                    title: course.title,
+                    description: course.description,
+                    instructor: course.instructor,
+                    schedule: course.schedule,
+                })),
+            };
+        } catch (error) {
+            throw new BadRequestException('Could not fetch courses for the instructor');
+        }
+    }
+    
 
     async getCourses(page: number, limit: number = 16) {
         try {
