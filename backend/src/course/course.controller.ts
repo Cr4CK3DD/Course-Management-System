@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 import { CourseService } from './course.service';
 import { CreateCourseDto } from './dto/CreateUser.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
@@ -25,6 +25,10 @@ export class CourseController {
     @UseGuards(JwtAuthGuard)
     @Post('/getByTitle')
     async getCoursesByTitle(@Body() body) {
+
+        if (Object.keys(body).length === 0)
+            throw new BadRequestException('Body should not be empty');
+
         const course = await this.courseService.getCourseByTitle(body.title);
         return course;
     }
@@ -32,6 +36,10 @@ export class CourseController {
     @UseGuards(JwtAuthGuard)
     @Post('/getByInstructor')
     async getCoursesByInstructor(@Body() body) {
+        
+        if (Object.keys(body).length === 0)
+            throw new BadRequestException('Body should not be empty');
+
         const course = await this.courseService.getCoursesByInstructor(body.instructor);
         return course;
     }

@@ -6,7 +6,7 @@ with open('courses_data.json', 'r') as file:
     courses = json.load(file)
 
 total_requests = len(courses)
-user_token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJpYXQiOjE3Mjc4Mjg5MDgsImV4cCI6MTcyNzgzMjUwOH0.K0vpruQ5fZfs4Cln6zBEO9oSjs5tlOQYrMVfFjAeO2I'
+user_token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJpYXQiOjE3Mjc5NjE3MzYsImV4cCI6MTcyNzk2NTMzNn0.WuOzSVMB7McB3yC1HovE-B0pLY8hxNSJmirKIDFc7Rw'
 create_course_endpoint = '/course/create'
 server = 'http://localhost:3000/'
 
