@@ -38,6 +38,9 @@ make
 
 # restart
 make restart
+
+# stop
+make stop
 ```
 
 
