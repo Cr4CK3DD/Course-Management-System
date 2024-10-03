@@ -116,16 +116,20 @@ curl http://localhost:3000/courses?page=<index>
 - Response:
 ```json
 {
-  "statusCode": 200,
-  "data": [
-    {
-      "title": "Example",
-      "description": "Example",
-      "instructor": "Example",
-      "schedule": "Tuesday 10:00",
-    },
-    ...
-    ]
+  statusCode: 200,
+  data: [
+      {
+        "title": "Example",
+        "description": "Example",
+        "instructor": "Example",
+        "schedule": "Tuesday 10:00",
+      },
+      ...
+    ],
+  "totalPages": 1,
+  "currentPage": 1,
+  "totalCourses": 16,
+  "statusCode": 200
 }
 ```
 
@@ -151,9 +155,9 @@ curl http://localhost:3000/courses?page=<index>
 }
 ```
 
-### Get Course By Title (Requires JWT token)
-- Endpoint: `POST /course/getByTitle`
-- Description: Get course with specific title
+### Get Course By Instructor (Requires JWT token)
+- Endpoint: `POST /course/getByInstructor`
+- Description: Get course with specific instructor name
 - Request:
 ```json
 {
