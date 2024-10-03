@@ -116,8 +116,8 @@ curl http://localhost:3000/courses?page=<index>
 - Response:
 ```json
 {
-  statusCode: 200,
-  data: [
+  "statusCode": 200,
+  "data": [
       {
         "title": "Example",
         "description": "Example",
