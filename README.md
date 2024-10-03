@@ -33,7 +33,7 @@ MONGO_INITDB_ROOT_PASSWORD=rootpassword
 
 3. Run
 ```sh
-# build & run
+# build & run (http://localhost)
 make
 
 # restart
@@ -42,7 +42,6 @@ make restart
 # stop
 make stop
 ```
-
 
 ## Testing
 For testing i wrote a python script that will iterate through all the courses in `courses_data.json` and send requests to course management system course endpoint to create new courses
